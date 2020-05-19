@@ -19,11 +19,14 @@ export class ChatService {
     };
 
     this.wsService.emitir('mensaje',payload);
-
   }
 
   getMessages(){
     return this.wsService.escuchar('mensaje-nuevo');
+  }
+
+  getMessagesPrivate(){
+    return this.wsService.escuchar('mensaje-privado');
   }
 
 }
