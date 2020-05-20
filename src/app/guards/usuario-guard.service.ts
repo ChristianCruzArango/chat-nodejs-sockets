@@ -7,14 +7,17 @@ import { WebsocketService } from '../services/websocket.service';
 })
 export class UsuarioGuard implements CanActivate {
 
+  constructor(
+    public wsService: WebsocketService,
+    private router: Router
+  ) { }
 
-  constructor(private wsService:WebsocketService,private router:Router) { }
 
-  canActivate(){
+  canActivate() {
 
-    if(this.wsService.getUsuario()){
+    if ( this.wsService.getUsuario() ) {
       return true;
-    }else{
+    } else {
       this.router.navigateByUrl('/');
       return false;
     }

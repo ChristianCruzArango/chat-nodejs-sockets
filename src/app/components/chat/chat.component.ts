@@ -7,40 +7,48 @@ import { Subscription } from 'rxjs';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit,OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy {
 
-  texto:'';
-  mensajesSubscription:Subscription;
-  elemento:HTMLElement;
-  mensajes:any[] = [];
+  texto = '';
+  mensajesSubscription: Subscription;
+  elemento: HTMLElement;
 
-  constructor(private chatService:ChatService) { }
+  mensajes: any[] = [];
 
-  ngOnInit(): void {
+
+
+  constructor(
+    public chatService: ChatService
+  ) { }
+
+  ngOnInit() {
 
     this.elemento = document.getElementById('chat-mensajes');
 
-    //se debe destruir la subscripcion que se esta emitiendo cuando no existe ya ninguna
-    this.mensajesSubscription = this.chatService.getMessages().subscribe(msg=>{
-     this.mensajes.push(msg);
-     setTimeout(() => {
-       this.elemento.scrollTop = this.elemento.scrollWidth;
-     }, 50);
+    this.mensajesSubscription = this.chatService.getMessages().subscribe( msg => {
+
+      this.mensajes.push( msg );
+
+      setTimeout(() => {
+        this.elemento.scrollTop = this.elemento.scrollHeight;
+      }, 50);
+
     });
+
   }
 
-  ngOnDestroy(){
-    //destruir la subscripcion
+  ngOnDestroy() {
     this.mensajesSubscription.unsubscribe();
   }
 
-  enviar(){
 
-    if(this.texto.trim().length === 0){
+  enviar() {
+
+    if ( this.texto.trim().length === 0 ) {
       return;
     }
-    this.chatService.sendMessage(this.texto);
 
+    this.chatService.sendMessage( this.texto );
     this.texto = '';
   }
 
